@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Groww Start: a student concept that shows your first investment in 3 taps. Demo only, not investment advice.">
+<meta name="theme-color" content="#00b386">
+<meta property="og:title" content="Groww Start (student concept)">
+<meta property="og:description" content="Your first investment, in 3 taps. No jargon.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+<title>Groww Start (student concept)</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7fb;--card:#fff;--tx:#14151a;--mu:#6b6f7b;--ac:#00b386;--bd:#e5e7ee;--warn:#fff4d6}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--tx:#f2f3f7;--mu:#9aa0ad;--bd:#2a2e38;--warn:#3a3217}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--tx:#f2f3f7;--mu:#9aa0ad;--bd:#2a2e38;--warn:#3a3217}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.45}
+main{max-width:480px;margin:auto;padding:16px}
+h1{font-size:22px;margin:4px 0}p.s{color:var(--mu);margin:0 0 14px;font-size:14px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:12px}
+.c h2{font-size:15px;margin:0 0 10px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button.o{border:1.5px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:10px;text-align:left;font:inherit;font-size:14px;cursor:pointer}
+button.o.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--card))}
+button.o small{display:block;color:var(--mu);font-size:12px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.big{font-size:30px;font-weight:700}.mu{color:var(--mu);font-size:13px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bar{height:10px;border-radius:6px;background:var(--bd);overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:var(--ac)}
+.warn{background:var(--warn);border-radius:12px;padding:10px;font-size:13px;margin-bottom:12px}
+.chip{display:inline-block;border:1px solid var(--bd);border-radius:20px;padding:4px 10px;margin:0 6px 6px 0;font-size:12px;cursor:pointer;background:var(--card);color:var(--tx)}
+#gl{font-size:13px;color:var(--mu);min-height:36px}
+label.t{display:flex;gap:8px;align-items:center;font-size:14px}
+.cta{width:100%;background:var(--ac);color:#fff;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:600;cursor:pointer}
+.fine{font-size:11px;color:var(--mu);margin-top:10px}
+</style></head><body><main>
+<h1>Groww Start</h1>
+<p class="s">Your first investment, in 3 taps. No jargon. Student concept, not real advice.</p>
+
+<div class="c"><h2>1. What are you saving for?</h2><div class="g" id="goals"></div></div>
+<div class="c"><h2>2. How much can you spare every month?</h2>
+<div class="row"><span class="big" id="amt"></span><span class="mu">per month</span></div>
+<input type="range" id="sl" min="100" max="5000" step="100" value="500">
+<div class="mu">Start tiny. Habit first, amount later.</div></div>
+
+<div id="nudge"></div>
+
+<div class="c"><h2>3. Your starter plan</h2><div id="mix"></div>
+<div class="row"><span class="mu">Time horizon</span><b id="yrs"></b></div></div>
+
+<div class="c"><h2>What could this become?</h2>
+<div class="mu">You put in</div><div id="inv" style="font-weight:600"></div>
+<div class="mu" style="margin-top:8px" id="lbl">Might grow to (estimate)</div><div class="big" id="fv"></div>
+<label class="t" style="margin-top:10px"><input type="checkbox" id="bad"> Show me a bad first year (markets fall)</label>
+<div class="mu" id="badtxt" style="margin-top:6px"></div></div>
+
+<div class="c"><h2>Confusing words? Tap one</h2>
+<span class="chip" data-k="SIP">SIP</span><span class="chip" data-k="Index fund">Index fund</span><span class="chip" data-k="Liquid fund">Liquid fund</span><span class="chip" data-k="Gold">Gold</span><span class="chip" data-k="Volatility">Volatility</span>
+<div id="gl">Tap a word above.</div></div>
+
+<button class="cta" onclick="alert('In the real app this would start KYC + auto-pay. Demo only.')">Start my ₹<span id="cta"></span>/month SIP</button>
+<div class="fine">Assumed yearly returns for illustration only: liquid 6%, gold 8%, index 12%. Bad year: index -25%, gold +5%, liquid 5%. Real returns vary and can be negative. Not investment advice.</div>
+</main>
+<script>
+var G={emergency:{n:"Emergency fund",d:"Safe cash cushion",y:1,m:{Liquid:100,Index:0,Gold:0}},
+trip:{n:"Trip / gadget",d:"Within 1 to 2 years",y:1,m:{Liquid:80,Index:0,Gold:20}},
+bike:{n:"Big purchase",d:"Around 3 years",y:3,m:{Liquid:50,Index:30,Gold:20}},
+wealth:{n:"Build wealth",d:"5+ years, ride it out",y:5,m:{Liquid:10,Index:70,Gold:20}}};
+var R={Liquid:.06,Index:.12,Gold:.08},B={Liquid:.05,Index:-.25,Gold:.05};
+var DEF={SIP:"Systematic Investment Plan: a fixed amount auto-invested every month, like a subscription to your future.",
+"Index fund":"One fund that holds the top companies in India. You own a tiny slice of many, not a bet on one.",
+"Liquid fund":"Parks money in very short-term safe stuff. Low growth, easy to take out. Good for money you need soon.",
+Gold:"Digital gold. Tends to hold value when stocks are shaky.",
+Volatility:"How much the value jumps up and down. High volatility = bumpy ride, not necessarily a bad one."};
+var s={goal:"wealth",amt:500};
+function inr(x){return "₹"+Math.round(x).toLocaleString("en-IN")}
+function sim(bad){var g=G[s.goal],n=g.y*12,bal=0;
+for(var m=0;m<n;m++){var a=0;for(var k in g.m){var r=(bad&&m<12)?B[k]:R[k];a+=g.m[k]/100*r}
+bal=(bal+s.amt)*Math.pow(1+a,1/12)}return bal}
+function draw(){var g=G[s.goal];
+document.getElementById("goals").innerHTML=Object.keys(G).map(function(k){return '<button class="o'+(k==s.goal?' on':'')+'" onclick="s.goal=\''+k+'\';draw()">'+G[k].n+'<small>'+G[k].d+'</small></button>'}).join("");
+amt.textContent=inr(s.amt);cta.textContent=s.amt;
+mix.innerHTML=Object.keys(g.m).filter(function(k){return g.m[k]>0}).map(function(k){return '<div class="row"><span>'+k+'</span><b>'+g.m[k]+'%</b></div><div class="bar"><i style="width:'+g.m[k]+'%"></i></div>'}).join("");
+yrs.textContent=g.y+(g.y>1?" years":" year");
+var b=document.getElementById("bad").checked,v=sim(b),put=s.amt*g.y*12;
+inv.textContent=inr(put);fv.textContent=inr(v);
+badtxt.textContent=b?(v<put?"In this scenario you would be below what you put in at the end. Staying invested is what usually recovers it.":"Even with a rough first year, this plan ends above what you put in."):"";
+nudge.innerHTML=(s.goal!="emergency"&&!window.ef)?'<div class="warn">Quick check: do you have 3 months of expenses saved? <a href="#" onclick="window.ef=1;draw();return false">Yes</a> · <a href="#" onclick="s.goal=\'emergency\';draw();return false">Not yet, build that first</a></div>':""}
+sl.oninput=function(){s.amt=+sl.value;draw()};bad.onchange=draw;
+document.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){gl.textContent=c.dataset.k+": "+DEF[c.dataset.k]}});
+draw();
+</script></body></html>
